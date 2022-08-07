@@ -30,6 +30,10 @@ const QuestionSchema = new Schema({
     likes: [{
         type : mongoose.Schema.ObjectId,
         ref: "User"
+    }],
+    answers: [{
+        type: mongoose.Schema.ObjectId,
+        ref: "Answer"
     }]
 
 });

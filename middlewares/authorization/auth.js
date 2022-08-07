@@ -4,6 +4,7 @@ const asyncErrorWrapper = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const User = require("../../models/User");
 const Question = require("../../models/Question");
+const Answer = require("../../models/Answer");
 const { isTokenIncluded, getAccessTokenFromHeader } = require("../../helpers/authorization/tokenHelpers");
 const expressAsyncHandler = require("express-async-handler");
 
@@ -102,10 +103,26 @@ const getQuestionOwnerAccess = asyncErrorWrapper(async (req,res,next) => {
 
 });
 
-// Exports this middleware for using in routers...
+const getAnswerOwnerAccess = asyncErrorWrapper(async (req,res,next) => {
+
+    const userId = req.user.id;
+    const answer_id = req.params.answer_id;
+
+    const answer = await Answer.findById(answer_id);
+
+    if(answer.user != userId){
+        return next(new CustomError("Only owner can handle this operation",403));
+    }
+
+    next();
+
+});
+
+// Exports this middlewares for using in routers...
 
 module.exports = {
     getAccessToRoute,
     getAdminAccess,
-    getQuestionOwnerAccess
+    getQuestionOwnerAccess,
+    getAnswerOwnerAccess
 };
