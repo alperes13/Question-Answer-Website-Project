@@ -38,6 +38,7 @@ AnswerSchema.pre("save", async function (next) {
         const question = await Question.findById(this.question);
 
         question.answers.push(this._id);
+        question.answerCount = question.answers.length;
 
         await question.save();
         next();

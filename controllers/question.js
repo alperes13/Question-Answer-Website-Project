@@ -16,20 +16,15 @@ const askNewQuestion = asyncErrorWrapper(async (req, res, next) => {
             success: true,
             data: question,
             message: "Question initialize has successful"
-        })
+        });
 
 });
 
 const getAllQuestions = asyncErrorWrapper(async (req, res, next) => {
 
-    const questions = await Question.find();
-
-    res.status(200)
-        .json({
-            success: true,
-            data: questions,
-            message: "All questions has been received"
-        })
+    return res
+    .status(200)
+    .json(res.queryResults);
 
 });
 
@@ -91,11 +86,12 @@ const likeQuestion = asyncErrorWrapper(async (req, res, next) => {
 
     const question = await Question.findById(id);
 
-    if(question.likes.includes(req.user.id)){
-        return next(new CustomError("You Already liked this question",400));
+    if (question.likes.includes(req.user.id)) {
+        return next(new CustomError("You Already liked this question", 400));
     }
 
     question.likes.push(req.user.id);
+    question.likeCount = question.likes.length;
 
     await question.save();
 
@@ -114,13 +110,14 @@ const undoLikeQuestion = asyncErrorWrapper(async (req, res, next) => {
 
     const question = await Question.findById(id);
 
-    if(!question.likes.includes(req.user.id)){
-        return next(new CustomError("You can not undo like operation for this Question",400));
+    if (!question.likes.includes(req.user.id)) {
+        return next(new CustomError("You can not undo like operation for this Question", 400));
     };
 
 
     const index = question.likes.indexOf(req.user.id);
-    question.likes.splice(index,1);
+    question.likes.splice(index, 1);
+    question.likeCount = question.likes.length;
 
     await question.save();
 
