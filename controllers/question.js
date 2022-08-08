@@ -30,18 +30,8 @@ const getAllQuestions = asyncErrorWrapper(async (req, res, next) => {
 
 const getSingleQuestion = asyncErrorWrapper(async (req, res, next) => {
 
-    const { id } = req.params;
-
-    const question = await Question.findById(id);
-
-    console.log(question);
-
     res.status(200)
-        .json({
-            succes: true,
-            data: question,
-            message: "A question has been received"
-        })
+        .json(res.queryResults);
 
 });
 

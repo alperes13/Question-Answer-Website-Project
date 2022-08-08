@@ -22,7 +22,9 @@ const questionQueryMiddleware = function(model,options){
         // pagination
         
         let pagination;
-        const paginationResult = await paginationHelper(model,query,req);
+
+        const total = await model.countDocuments();
+        const paginationResult = await paginationHelper(total,query,req);
 
         query = paginationResult.query;
         pagination = paginationResult.pagination;
