@@ -57,11 +57,16 @@ const login = asyncErrorWrapper(async (req, res, next) => {
     }
 
 
-
     sendJwtToClient(user, res);
 
 
 });
+
+/* 
+
+    This function for logout process, sending a cookie but changing expires times with now.
+
+*/
 
 
 const logout = asyncErrorWrapper(async (req, res, next) => {
@@ -126,8 +131,16 @@ const imageUpload = asyncErrorWrapper(async (req, res, next) => {
 
 });
 
+/* 
+
+    This function for reset password.
+
+*/
+
 
 const forgotPassword = asyncErrorWrapper(async (req, res, next) => {
+
+    // Taking email by body, and finding User in database. If there is not a user as like this returning a error.
 
     const resetEmail = req.body.email;
 
@@ -136,6 +149,9 @@ const forgotPassword = asyncErrorWrapper(async (req, res, next) => {
     if (!user) {
         return next(new CustomError("There is no user with that email.", 400));
     }
+
+    // There is method by User model for random string and expire time. Check it for information. After using this method, we saving user because
+    // user model will be changed.
 
     const resetPasswordToken = user.generateResetPasswordTokenFromUser();
 
@@ -147,6 +163,14 @@ const forgotPassword = asyncErrorWrapper(async (req, res, next) => {
     <h3>Reset Your Password</h3>
     <p> This <a href = "${resetPasswordUrl}" target = "_blank" > link </a> will expire in 1 hour </p>
     `;
+
+    /* 
+    
+        Using sendMail() function. Its coming inside of helpers/libraries/sendMail().
+
+        If there is any error, saving user reset password fields as undefined.
+    
+    */
 
     try {
         await sendEmail({
@@ -173,6 +197,15 @@ const forgotPassword = asyncErrorWrapper(async (req, res, next) => {
 
 
 });
+
+
+
+/* 
+
+    Receiving reset password token by url and password from body. Searching user from database with token.
+If there is any user as like this changing user password and saving. Otherwise optimize User token fields as undefined.
+
+*/
 
 const resetPassword = asyncErrorWrapper(async (req, res, next) => {
 
@@ -208,6 +241,13 @@ const resetPassword = asyncErrorWrapper(async (req, res, next) => {
 
 });
 
+/* 
+
+        This function for update user data. Receiving information from body. Searching user in database with user.id, changing with
+    new information.
+
+*/
+
 const editDetails = asyncErrorWrapper(async (req, res, next) => {
 
     const editInformation = req.body;
@@ -219,11 +259,11 @@ const editDetails = asyncErrorWrapper(async (req, res, next) => {
     });
 
     return res.status(200)
-    .json({
-        success: true,
-        message: "Profile updated",
-        data: user
-    })
+        .json({
+            success: true,
+            message: "Profile updated",
+            data: user
+        })
 
 });
 

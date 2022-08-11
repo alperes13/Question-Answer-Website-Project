@@ -1,5 +1,14 @@
 const nodemailer = require("nodemailer");
 
+/* 
+
+        This function for sending email to user. Using a nodemailer function here as createTransport(). This function taken a argument as object.
+    Host, port, auth. 
+    
+    After creating a transport using sendMail() function. And logging console to message.
+
+*/
+
 const sendEmail = async(mailOptions) => {
 
     let transporter = nodemailer.createTransport({

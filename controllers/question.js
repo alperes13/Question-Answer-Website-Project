@@ -2,6 +2,20 @@ const Question = require("../models/Question");
 const CustomError = require("../helpers/error/CustomError");
 const asyncErrorWrapper = require("express-async-handler");
 
+/* 
+
+    This control layer for question routers.
+
+*/
+
+
+/* 
+
+        This function creating a new question. Receiving informaions by body and user id by request. We can find user id in request because
+    this router using a middleware for authorization access. And this middleware sending user id to request. 
+
+*/
+
 const askNewQuestion = asyncErrorWrapper(async (req, res, next) => {
 
     const information = req.body;
@@ -20,6 +34,12 @@ const askNewQuestion = asyncErrorWrapper(async (req, res, next) => {
 
 });
 
+/* 
+
+    This function for receiving all the questions. But its returning different response, u can find it inside of middlewares/query/questionQueryMiddleware
+
+*/
+
 const getAllQuestions = asyncErrorWrapper(async (req, res, next) => {
 
     return res
@@ -28,12 +48,25 @@ const getAllQuestions = asyncErrorWrapper(async (req, res, next) => {
 
 });
 
+/* 
+
+    This function for receiving only a question. But its returning different response, u can find it inside of middlewares/query/answerQueryMiddleware
+
+*/
+
 const getSingleQuestion = asyncErrorWrapper(async (req, res, next) => {
 
     res.status(200)
         .json(res.queryResults);
 
 });
+
+/* 
+
+    This function for edit a question. Getting a question id from url, and information from body. Searching
+    this id in Question collection and update data with information which id is there. 
+
+*/
 
 const editQuestion = asyncErrorWrapper(async (req, res, next) => {
 
@@ -56,6 +89,13 @@ const editQuestion = asyncErrorWrapper(async (req, res, next) => {
 
 });
 
+
+/* 
+
+    Deleting a question. Getting id in url, and delete it in collection.
+
+*/
+
 const deleteQuestion = asyncErrorWrapper(async (req, res, next) => {
 
     const { id } = req.params;
@@ -69,6 +109,14 @@ const deleteQuestion = asyncErrorWrapper(async (req, res, next) => {
         });
 
 });
+
+/* 
+
+        This is for like a question. Getting id in url and serching it in collection. If user already like that question, 
+    returning a error. Otherwise if is not, pushing user id to which model we have and updating like count. After all of this
+    process saving the question.
+
+*/
 
 const likeQuestion = asyncErrorWrapper(async (req, res, next) => {
 
@@ -93,6 +141,15 @@ const likeQuestion = asyncErrorWrapper(async (req, res, next) => {
         });
 
 });
+
+
+/* 
+
+        This is for undo like a question. If question like list isn't include user id, then throwing a error. 
+    Otherwise getting user id index inside of likes and deleting. Finally, updating like count and saving question.
+
+
+*/
 
 const undoLikeQuestion = asyncErrorWrapper(async (req, res, next) => {
 

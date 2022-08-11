@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 /* 
 
-    There is for database connect, working with mongoose.
+    There is for database connect function, its working with mongoose.
 
 */
 

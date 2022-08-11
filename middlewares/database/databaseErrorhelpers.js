@@ -4,6 +4,12 @@ const asyncErrorWrapper = require("express-async-handler");
 const Question = require("../../models/Question");
 const Answer = require("../../models/Answer");
 
+/* 
+
+    This middleware function for query to user for registered or not.
+
+*/
+
 const checkUserExist = asyncErrorWrapper(async (req, res, next) => {
 
     const { id } = req.params;
@@ -19,6 +25,12 @@ const checkUserExist = asyncErrorWrapper(async (req, res, next) => {
 
 });
 
+/* 
+
+    This function query to question for is it there or not.
+
+*/
+
 const checkQuestionExist = asyncErrorWrapper(async (req, res, next) => {
 
     const question_id = req.params.id || req.params.question_id;
@@ -33,6 +45,12 @@ const checkQuestionExist = asyncErrorWrapper(async (req, res, next) => {
 
 
 });
+
+/* 
+
+    This function query to answer for database.
+
+*/
 
 const checkAnswerExist = asyncErrorWrapper(async (req, res, next) => {
 

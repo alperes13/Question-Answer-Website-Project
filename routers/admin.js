@@ -2,8 +2,6 @@ const express = require("express");
 const { getAccessToRoute, getAdminAccess } = require("../middlewares/authorization/auth");
 const {blockUser, deleteUser} = require("../controllers/admin");
 const { checkUserExist } = require("../middlewares/database/databaseErrorhelpers");
-// There is 2 options. One for block a user, one for delete a user.
-
 
 const router = express.Router();
 

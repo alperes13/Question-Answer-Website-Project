@@ -57,14 +57,13 @@ app.use(customErrorHandler);
 
 /* 
 
-    In the ExpressJs, if we want to get static files, we need to use a package in the ExpressJs. Firstly we can start
-with setting a variable from require("path").
+    In the ExpressJs, if we want to get static files, we need to use a package.
 
 */
 
 app.use(express.static(path.join(__dirname,"public")));
 
-// This is for running our server.
+// This is for getting up the server.
 
 app.listen(PORT, () => {
 

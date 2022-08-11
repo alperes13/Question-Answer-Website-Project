@@ -3,6 +3,16 @@ const Answer = require("../models/Answer");
 const CustomError = require("../helpers/error/CustomError");
 const asyncErrorWrapper = require("express-async-handler");
 
+// This layer controlling answer routers but this router using question router.
+
+
+/* 
+
+        This function for creating an answer. Receive question id from url, user id from request because its 
+    using authorization access middleware, information from body. And creating an answer with this data.
+
+*/
+
 const addNewAnswer = asyncErrorWrapper(async (req, res, next) => {
 
     const question_id = req.params.id;
@@ -24,6 +34,14 @@ const addNewAnswer = asyncErrorWrapper(async (req, res, next) => {
 
 });
 
+/* 
+
+        This is function for receive all of the answer by a question. Firstly using question id by url. And searching
+    this id in question collection with populating answers. Define a variable with answers list by question. And returning
+    response with this variable.
+
+*/
+
 const getAllAnswersByQuestion = asyncErrorWrapper(async (req, res, next) => {
 
     const question_id = req.params.id;
@@ -41,6 +59,13 @@ const getAllAnswersByQuestion = asyncErrorWrapper(async (req, res, next) => {
         });
 
 });
+
+/* 
+
+        This function using for receive an answer. Firslt getting answer's id from url and searching it 
+    inside of answers collection with populating process. And returning a response with answer data.
+
+*/
 
 const getSingleAnswer = asyncErrorWrapper(async (req, res, next) => {
 
@@ -67,6 +92,14 @@ const getSingleAnswer = asyncErrorWrapper(async (req, res, next) => {
 
 });
 
+/* 
+
+        This function for editting an answer. Firstly receiving an id from url and informations. This id is 
+    answer_id. Finding this answers with id in answer collection and updating with information.
+
+
+*/
+
 const editAnswer = asyncErrorWrapper(async (req, res, next) => {
 
     const answer_id = req.params.answer_id;
@@ -87,6 +120,15 @@ const editAnswer = asyncErrorWrapper(async (req, res, next) => {
         });
 
 });
+
+
+/* 
+
+        This function for deleting an answer. Receiving question id and answer id inside of url and removing 
+    them inside of answer collection. But we need to delete it in question colellection too. Searching this answer
+    id in question collection and deleting. After all of this process saving updated question.
+
+*/
 
 const deleteAnswer = asyncErrorWrapper(async (req, res, next) => {
 
@@ -109,6 +151,12 @@ const deleteAnswer = asyncErrorWrapper(async (req, res, next) => {
     })
 
 });
+
+/* 
+
+    This is function for like a answer. This is working same as like a question.
+
+*/
 
 const likeAnswer = asyncErrorWrapper(async (req, res, next) => {
 

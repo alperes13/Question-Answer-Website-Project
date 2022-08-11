@@ -46,6 +46,11 @@ const QuestionSchema = new Schema({
 
 });
 
+/* 
+
+    This 2 function working for saving question with slug.
+
+*/
 QuestionSchema.pre("save", function(next){
     if(!this.isModified("title")){
         next();

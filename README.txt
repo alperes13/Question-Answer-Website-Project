@@ -1,79 +1,50 @@
-Bu bir node projesi olduğu için işlemlerimize ilk başta "npm init" kodu ile başlamalıyız.
-daha sonra ise nodemon indirip, nodemon ile serverimizi başlatmaliyiz.
+
+Using dotenv package for global variables in this project. 
+
+We can receive variables as "process.env.<variableName>".
 
 ----------------------------------------------------------------------------------------------------------------------------
+Lines and files.
 
-dotenv ile ortam değişkenlerini kullanmalıyız. dotenv.config() dosyası normalde config in altındaki config.env e bakiyor
-fakat bizim config in altında bir dosyamız daha olduğu için env adinda bu yolu ona göstermeliyiz 
-(config(x) => x için gösterilecek)
+This project consist of 5 layer, 
 
-env dosyasının içerisindeki değişkenlere, "proess.env.degiskenAdi" seklinde ulasilabilinir.
+1- Url are going directly routers layer. Interested routers manage the request to controller layer.
+E.g. if we want to create an answer, router sending this request to controller.
 
-----------------------------------------------------------------------------------------------------------------------------
-PROJENİN GENEL HATLARI VE DOSYALAR
+2- If there is a request as creating a question, data will going directly to models layer by controllers.
 
-Proje 5 katmandan oluşmaktadır, 
+3- Helpers layer: There is for helper function and the external packs defined in this layer. Nodemailer for example.
 
-1- biz projemize herhangi bir url girdiğimizde ilk önce routes katmanına gidecektir, bu routeslarimizda değişik route larimiz
-olacak. Örneğin siz bir api/questions ile ilgili route girmisseniz bu route ilgili işlemi controller a gönderecek. Yani biz
-örneğin questionslar ile ilgili bir işlem yapmak istiyor isek bu route controllers i çalıştıracak
+4- There is middleware functions of own created. This is the layer too. Some routers must be working with only who have to
+access.
 
-2- Ve biz örneğin bir questions oluşturmak istedik, controller katmanından veri, models katmanına gidecektir ve oradaki schema
-lara göre mongoDb veritabanı için gerekli islemler yapilacaktir.
-
-3- Helpers katmanı: bizim yardımcı fonksiyonumuz icin var olacaktir, örneğiz biz dışarıdan farkli kütüphaneler kullanacağız
-bu kütüphaneler helpers içerisinde yer alacaktır
-
-4- proje içerisinde kendi oluşturduğumuz middlewares katmanı olacaktir, buda bir katmandır. Örneğin biz bir route
-a ulaşmak istiyoruz bir başkasının sorusunu güncellemek istiyoruz. Bu mümkün değil bunu sadece kendi sahibi güncelleyebilir.
-Bunun için bu route bu fonksiyonu çalıştırmadan once ilgili middleware fonksiyonunu çalıştırmaya çalışacak, ayrica middleware
-söyle bir future da bulunduracak: Örneğin siz bir questions a erişmek istiyorsunuz, bu bir cok controller icerisinde yer 
-alabilir, erişim işlemi. Ancak bunu her seferinde kontrol etmeyelim diye biz merkezi bir question middleware i oluşturacağız
-ve oda yine middlewares içerisinde yer alacak.
-
-----------------------------------------------------------------------------------------------------------------------------
-ROUTER katmani
-
-Eğer ki biz tüm get işlemlerimizi, server.js içerisinde yazar isek bir süre sonra bakımı oldukça zorlaşacaktır ve değişime
-de oldukça kapalı olacaktır, neyin nerede olduğunu bulmakta zorlanacağız. Projenin router larını modüler hale getirmeye
-çalışmalıyız.
-
-----------------------------------------------------------------------------------------------------------------------------
-CONTROLLER katmani
-
-routerlarimiza herhangi bir istek gönderdiğimiz zaman, routerlarimizda requst repsonse larimiza göre işlemlerimizi
-gerçekleştiriyoruz. Ancak uygulamamizin sürdülebilirliği ve yönetiminin kolaylığı için modüler olmasi gerekli.
-Yani biz artik router larimizdaki response, request işlemlerimizi controller katmaninda yapmalıyız. Buraya yazilacak
-controller fonksiyonlar belli bir router dan sonra çalışacak ve ona göre işlem yapacaklar. Örneğin bir soruyu ekleme,
-bir soruyu güncelleme gibi işlemleri gerçekleştirecekler.
-
-----------------------------------------------------------------------------------------------------------------------------
-Veritabanı bağlantısı (HELPER Katmani)
-
-veritabanımızın bağlantısı için mongoose adindaki bir npm paketinden yararlanmaliyiz, bu paket ile ilgili işlemler helpers
-içeriisnde yer almalıdır.
 
 ----------------------------------------------------------------------------------------------------------------------------
 Error Handling
 
-Hata yakalama bir api projesinde en önemli kisimlardan biridir. Eğer bir projede hata yakalama olmaz ise request ve response
-larini yerine getiremeyebilir. Bu durum herhangi bir web projesi için hiç iyi bir şey değildir. Bir projede çok fazla hata olur
-ve bu hataları yakalayamaz isek, bu projeyi kullanan web kullanıcıları bir süre sonra sistemden gideceklerdir. Ve eğer kritik
-api lar var ise bu api larin çökmesi oldukça zararlı olacaktır. O yüzden error handling konusunu projemize dahil etmeliyiz.
+Error handling is one of the important side of the project. If there is not error handling in project, response and request
+could not to find target. This situation start to difficult for website.
 
-Express'in kendi sitesinde error handling aratır isek karşımıza gerekli makale gelecektir.
+We can find necessary document about error handling in express website.
 
-Expresste 2 türlü error handling mekanizması vardır. Birinci kullanımı senkron kodları yakalamak anlamında, eğer bizim
-senkron kodlarımızda herhangi bir hata olursa express burda building olarak, error handling mekanizması var ve bunu
-kendi içerisinde yakalayabiliyor, ve uygululamamız patlamıyor. Sadece burada hata fırlatılıyor ve express bunu yakalayabiliyor.
+There is 2 type error handling in express. First usage for cacthing sychronous code. If there is any error with olur
+sychronous code, express can handle this.
 
-Anca express in yakalayamadığı durumlarda mevcut. Bu durum asenkron kodlarda herhangi bir problem olur ise express bunu
-yakalayamıyor. Express in bunu direk olarak yakalayabilmesi için, hatayı next parametresi ile göndermemiz gerekiyor. Eğer biz
-hatayı next ile express e gönderir isek, express bunu yine kendi içerisinde yakalayacaktır.
+But process is different for asynchoronous code.
+
+If there is any problem with asynchoronous code, we must to send them with next() function. And express will be cacht them
+with this way.
 
 ----------------------------------------------------------------------------------------------------------------------------
-Password Hash
 
-bcryptjs - npm package
-----------------------------------------------------------------------------------------------------------------------------
+Npm packs i have to used:
+
+expressjs - The server for handling and routing HTTP requests
+jsonwebtoken - For generating JWTs used by authentication
+mongoose - For modeling and mapping MongoDB data to JavaScript
+slugify - For encoding titles into a URL-friendly format
+bcryptjs - Hashing Password
+dotenv - Zero-Dependency module that loads environment variables
+multer - Node.js middleware for uploading files
+nodemailer - Send e-mails from Node.js
 

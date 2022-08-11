@@ -28,6 +28,13 @@ const AnswerSchema = new Schema({
     }
 });
 
+
+/* 
+
+    This hook function working for before saving process, pushing answer to inside of the question.
+
+*/
+
 AnswerSchema.pre("save", async function (next) {
 
     if (!this.isModified("user")) return next();

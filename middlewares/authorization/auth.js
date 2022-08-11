@@ -74,6 +74,12 @@ const getAccessToRoute = (req, res, next) => {
 
 };
 
+    /* 
+    
+        This function query to id for role. 
+    
+    */
+
 const getAdminAccess = asyncErrorWrapper(async (req,res,next) => {
 
     const {id} = req.user;
@@ -87,6 +93,12 @@ const getAdminAccess = asyncErrorWrapper(async (req,res,next) => {
     next();
 
 });
+
+/* 
+
+    This function query to id for question owner. Because only owner can edit or delete his question.
+
+*/
 
 const getQuestionOwnerAccess = asyncErrorWrapper(async (req,res,next) => {
 
@@ -102,6 +114,12 @@ const getQuestionOwnerAccess = asyncErrorWrapper(async (req,res,next) => {
     next();
 
 });
+
+/* 
+
+    This function query to id for answer owner. Because only owner can edit or delete his answer.
+
+*/
 
 const getAnswerOwnerAccess = asyncErrorWrapper(async (req,res,next) => {
 

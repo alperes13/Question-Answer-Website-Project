@@ -90,6 +90,12 @@ const UserSchema = new Schema({
 });
 
 
+/* 
+
+    This function for reset password. We need a expire time and random string for validation. Sending expire time and random string to User model.
+
+*/
+
 UserSchema.methods.generateResetPasswordTokenFromUser = function () {
 
     const {RESET_PASSWORD_EXPIRE} = process.env;
@@ -112,9 +118,9 @@ UserSchema.methods.generateResetPasswordTokenFromUser = function () {
 
 /* 
 
-If who want to use JWT, they need to begin with adding a method for model. This method include the jwt generating codes.
-There is must be a "payload" for creating a generator. Payload's feature is getting fields of what model we used. From other
-side, we need to a secret key and expire object. They are need to be defined in config.env because they are global variables.
+        If who want to use JWT, they need to begin with adding a method for model. This method include the jwt generating codes.
+    There is must be a "payload" for creating a generator. Payload's feature is getting fields of what model we used. From otherwide, we
+    need a secret key and expire object. They are need to be defined in config.env because they are global variables.
 
 */
 
@@ -176,8 +182,6 @@ UserSchema.pre("save", function (next) {
 
     // otherwise continue
 
-
-
     bcrypt.genSalt(10, (err, salt) => {
 
 
@@ -198,6 +202,12 @@ UserSchema.pre("save", function (next) {
         });
     });
 });
+
+/* 
+
+    This hook working for while a user has been delete, question should to be delete with them. 
+
+*/
 
 UserSchema.post("remove",async function(){
 

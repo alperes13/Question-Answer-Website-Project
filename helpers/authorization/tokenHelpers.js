@@ -3,7 +3,7 @@
 
     We can use document for how to save jwt into cookies: https://expressjs.com/en/4x/api.html#res.cookie
 
-    We need to create a function for cookies sending, and this function should to return .json() and .status(). 
+    We need to create a function for sending cookies, and this function should to return .json() and .status(). 
 Because we always use this function on controllers/auth. And this is will be global response function for registering.
 
     We'll using token generate method from incoming argument. After this process we will return .cookie(x,y,z) response.
@@ -71,7 +71,7 @@ const isTokenIncluded = (req) => {
 
 
 
-
+// this function split "token" from "Bearer:"" on cookies and returning pure token.
 
 const getAccessTokenFromHeader = (req) => {
 
